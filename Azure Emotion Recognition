@@ -1,0 +1,35 @@
+# 先导入为们需要的模块
+import requests
+import json
+
+# Replace with a valid Subscription Key here.
+KEY = 'c31ef14a792e478782f9c83ff74b25f5' 
+
+# Base URL,  Request URL中 符号?以前
+BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect' 
+
+img_url = 'http://newmedia.nfu.edu.cn/wcy/wp-content/uploads/2018/04/post_20180424__NFU_DoraHacks_imoji%E5%9B%A2%E9%98%9F.jpg'
+
+# 沿用API的示范代碼，{subscription key}用KEY代入
+HEADERS = {
+    # Request headers
+    'Content-Type': 'application/json',
+    'Ocp-Apim-Subscription-Key': '{}'.format(KEY),
+}
+
+data = {
+    'url': '{}'.format(img_url),
+}
+
+payload = {
+    'returnFaceId': 'true',
+    'returnFaceLandmarks': 'false',
+    'returnFaceAttributes': '{}'.format('emotion'), 
+}
+
+r = requests.post(BASE_URL, data=json.dumps(data), params=payload, headers=HEADERS)
+result = r.json()
+
+import pandas as pd
+
+df = pd.json_normalize(result)
