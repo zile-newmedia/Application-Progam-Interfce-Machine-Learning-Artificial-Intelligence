@@ -1,0 +1,45 @@
+# 1、先导入为们需要的模块
+import requests
+
+
+api_secret = "Vr0PtRCw-ZFwYXTKVfi6aDNaSqlfunK3"
+# 2、输入我们API_Key
+api_key = 'jRpCaZ34kqNYJ8Zppdc-yGGum_YkETov'  # Replace with a valid Subscription Key here.
+
+
+# 3、目标url
+# 这里也可以使用本地图片 例如：filepath ="image/tupian.jpg"
+BASE_URL = 'https://api-cn.faceplusplus.com/facepp/v3/detect' 
+img_url = 'http://newmedia.nfu.edu.cn/wcy/wp-content/uploads/2018/04/post_20180424__NFU_DoraHacks_imoji%E5%9B%A2%E9%98%9F.jpg'
+
+# 4、沿用API文档的示范代码,准备我们的headers和图片(数据)
+
+headers = {
+    'Content-Type': 'application/json',
+}
+
+# 5、准备symbol ? 后面的数据
+
+payload = {
+    "image_url":img_url,
+    'api_key': api_key,
+    'api_secret': api_secret,
+    'return_attributes':'emotion', 
+}
+
+#  6、requests发送我们请求
+r = requests.post(BASE_URL, params=payload, headers=headers)
+
+r.status_code
+print(r.content)
+
+results = r.json()
+results
+
+import pandas as pd
+
+# from pandas.io.json import json_normalize
+
+df = pd.json_normalize(results,record_path='faces')
+
+df
