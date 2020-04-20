@@ -1,0 +1,28 @@
+import pandas as pd
+import requests
+key ="1a8b4a8f8eacf6e72af8287289e0e270"
+
+#地理编码
+def geocode(address,city=None,batch=None,sig=None)->dict:   #geocode:地理编码信息列表
+    """获取地理编码"""
+    url = 'https://restapi.amap.com/v3/geocode/geo?parameters'
+    params={
+        'key': key_xu,
+        'address':address,   #结构化地址信息
+        'city':city,
+        'batch':batch,   #批量查询控制
+        'sig':sig,
+        'output':'json'   #返回数据格式类型
+    }
+    response = requests.get(url,params=params)
+    data = response.json()
+    return data
+
+中大南方 = geocode(address='广东省广州市从化区中山大学南方学院')   #geocode:地理编码信息列表
+print(中大南方)
+
+df_中大南方地理编码 = pd.json_normalize(中大南方['geocodes'])   #geocode:地理编码信息列表
+display(df_中大南方地理编码)
+
+中大南方地理编码 = 中大南方['geocodes'][0]['location']
+print("中大南方地理编码:",中大南方地理编码)
