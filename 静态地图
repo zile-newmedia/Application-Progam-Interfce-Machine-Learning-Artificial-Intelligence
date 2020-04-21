@@ -1,0 +1,46 @@
+#静态地图
+
+# 1.准备base url、params、response.json（） 
+def walking(origin,destination,sig=None)->dict:
+    url = 'https://restapi.amap.com/v3/direction/walking?parameters'
+    params={
+        'key':key_xu,
+        'origin':origin,
+        'destination':destination,
+        'output':'json',
+        'walk_type':16
+    }
+    response = requests.get(url,params=params)
+    data = response.json()
+    return data
+
+
+# 2.准备walking 参数
+中大南方_location = 中大南方['geocodes'][0]['location']
+
+
+from PIL import Image
+from io import BytesIO
+
+def staticmap(location,zoom,size=None,scale=1,markers=None,labels=None,paths=None,traffic=0,page=None,sig=None)->dict:
+    
+    url = 'https://restapi.amap.com/v3/staticmap?parameters'
+    params={
+        'key':key_xu,
+        'location':location,
+        'zoom':zoom,
+        'size':size,
+        'scale':scale,
+        'markers':markers,
+        'labels':labels,
+        'paths':paths,
+        'traffic':traffic,
+        'sig':sig,
+        'output':'json'
+    }
+    response = requests.get(url,params=params)
+    data = Image.open(BytesIO(response.content))
+    return data
+
+
+staticmap(location=中大南方_location,zoom=16)
