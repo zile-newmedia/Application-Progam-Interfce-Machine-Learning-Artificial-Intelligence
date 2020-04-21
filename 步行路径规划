@@ -1,0 +1,28 @@
+# 步行路径规划
+
+# 1.准备base url、params、response.json（） 
+def walking(origin,destination,sig=None)->dict:
+    url = 'https://restapi.amap.com/v3/direction/walking?parameters'
+    params={
+        'key':key_xu,
+        'origin':origin,
+        'destination':destination,
+        'output':'json',
+        'walk_type':16
+    }
+    response = requests.get(url,params=params)
+    data = response.json()
+    return data
+
+# 2.准备walking 参数
+龙岗社区居委会 = geocode('广东省广州市从化区龙岗社区居委会')
+龙岗社区居委会_location = 龙岗社区居委会['geocodes'][0]['location']   #“['geocodes'][0]['location']”：得到地理编码(经纬度)！！！
+中大南方_location = 中大南方['geocodes'][0]['location']
+print("(起点)中大南方_location:",中大南方_location,"(终点)龙岗社区居委会_location:",龙岗社区居委会_location)
+
+# 3.路径规划
+中大南方_龙岗社区居委会 = walking(中大南方_location,龙岗社区居委会_location)   #“def walking(origin,destination,sig=None)->dict:”
+df_步行路径规划 = pd.json_normalize(中大南方_龙岗社区居委会["route"]["paths"][0]['steps'])
+
+display(df_步行路径规划)
+df_步行路径规划["instruction"]
